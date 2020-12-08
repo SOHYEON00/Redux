@@ -39,6 +39,18 @@ by Nomad Coders
 
 - never use MUTATE STATE
 
+- Three principles of Redux
+
+1. Single source of truth (store는 하나만 존재해야 한다.)
+
+2. State is read-only (store.getState() +1 같은 코드는 존재하지 않는다.)
+    - state를 변경할 수 있는 유일한 방법은 action을 보내는 것이다.
+
+3. Never mutate state (state를 변화시킬 수 없다.)
+    - Remember to ***return new state objects***, instead of mutating the previous state.
+      즉, 기존의 상태를 수정하는 것이 아니라, 새로운 object를 리턴해야한다.
+      
+
 <br/><br/>
 ***
 

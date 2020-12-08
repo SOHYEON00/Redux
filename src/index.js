@@ -107,21 +107,23 @@ const reducer = (state = [], action) => {
   
   switch(action.type){
     case ADD_TODO:
-      return [];
+      return [...state, {text: action.text, id: Date.now()}]; //no mutate state. ...state(과거의 state), {text:~~}(new todo)
     case DELETE_TODO:
       return [];
     default:
       return state;
   }
-}
+};
 
 const store = createStore(reducer);
+
+store.subscribe(() => console.log(store.getState()));
 
 const onSubmit = (e) => {
   e.preventDefault();
   const toDo = input.value;
   input.value = "";
-  store.dispatch({type: ADD_TODO, text: toDo});
+  store.dispatch({type: ADD_TODO, text: toDo, id: Date.now()});
 }
 
 form.addEventListener("submit", onSubmit);
