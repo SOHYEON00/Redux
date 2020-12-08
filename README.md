@@ -30,6 +30,15 @@ by Nomad Coders
 : state를 변화를 store에서 감지하고 싶다면, 그 변화를 subcribe()해주면 된다.
 
 
+
+<br/><br/>
+***
+<br/><br/>
+
+# Pure-Redux
+
+- never use MUTATE STATE
+
 <br/><br/>
 ***
 
