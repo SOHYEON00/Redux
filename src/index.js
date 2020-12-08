@@ -15,18 +15,17 @@ const number = document.querySelector("span");
 //state = 0 : state 초기화하는 건데 항상 하는게 아니라, 만약 state(count)값이 없다면 초기화해주는 것.
 const countModifier = (count = 0, action) => {
   //modify state code, but how? => using action => countModifier(currentState = 0, {type: "HELLO"}) 이렇게 실행됨.
-
+  console.log(count, action)
   //적용하기
   if (action.type === "ADD") {
-    return count++;
+    return count += 1;
   }
   else if(action.type === "MINUS"){
-    return count--;
+    return count = count-1;
   }
   else {
     return count;
   }
-  
 };
 // reducer : data의 의미를 찾고 수정(modify)하는 function이다.
 // reducer가 return 하는 것이 application의 data가 된다.
@@ -37,14 +36,21 @@ const countStore = createStore(countModifier); // => Reducer가 필요함
 //action 은 항상 object여야 한다.
 
 //얘네는 선언하면 바로 실행됨.
-countStore.dispatch({type: "ADD"});
-countStore.dispatch({type: "MINUS"});
+// countStore.dispatch({type: "ADD"});
+// countStore.dispatch({type: "MINUS"});
 
 
-console.log(countStore.getState()); 
+// console.log(countStore.getState()); 
 //countStore는 총 4개의 함수를 가진다. 
 // dispatch() , getState() , replaceReducer() , subscribe()
 
+// subscribe : store안에 있는 변화들을 알게 해준다.
+// 즉, state에 변화가 생기면 실행되는 함수 == html에 number(state)를 업데이트하는 기능
+const onChange = () => {
+  number.innerText = countStore.getState();
+}
+
+countStore.subscribe(onChange)
 
 // 작성 순서
 // 1. create store using createStore
@@ -71,6 +77,8 @@ console.log(countStore.getState());
 //   count--;
 //   updateText();
 // }
+ 
 
-// add.addEventListener("click", addValue);
-// minus.addEventListener("click", minusValue);
+// 버튼과 REDUCER연결하기
+add.addEventListener("click", () => countStore.dispatch({type: "ADD"}));
+minus.addEventListener("click", () => countStore.dispatch({type: "MINUS"}));
