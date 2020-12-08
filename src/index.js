@@ -102,6 +102,13 @@ const ul = document.querySelector("ul");
 const ADD_TODO = "ADD_TODO";
 const DELETE_TODO = "DELETE_TODO";
 
+const addToDo = (text) => {
+  return {type: ADD_TODO, text: text};
+}
+
+const deleteTodo = (id) => {
+  return {type: DELETE_TODO, id}
+}
 const reducer = (state = [], action) => {
   console.log(action);
   
@@ -109,7 +116,7 @@ const reducer = (state = [], action) => {
     case ADD_TODO:
       return [...state, {text: action.text, id: Date.now()}]; //no mutate state. ...state(과거의 state), {text:~~}(new todo)
     case DELETE_TODO:
-      return [];
+      return state.filter(todo => todo.id !== action.id);
     default:
       return state;
   }
@@ -117,13 +124,41 @@ const reducer = (state = [], action) => {
 
 const store = createStore(reducer);
 
-store.subscribe(() => console.log(store.getState()));
+// ************ improvement 1
+const dispatchAddTodo = text => {
+  store.dispatch(addToDo(text));
+}
+
+const dispatchDeleteTodo = (e) => {
+  const id = parseInt(e.target.parentNode.id); //클릭된 버튼을 가진 li의 id
+  store.dispatch(deleteTodo(id));
+}
+
+const paintToDos = () => {
+  const toDos = store.getState();
+  ul.innerHTML = ''; //everytime clean the whole list
+
+  // make a new list and paint 
+  toDos.forEach(toDo => {
+    const li = document.createElement("li");
+    const delBtn = document.createElement("button");
+    delBtn.innerText = "Del";
+    delBtn.addEventListener("click", dispatchDeleteTodo);
+    li.id = toDo.id
+    li.innerText = toDo.text;
+    li.appendChild(delBtn);
+    ul.appendChild(li);
+  })
+}
+
+store.subscribe(paintToDos); //repaints states on html
+
 
 const onSubmit = (e) => {
   e.preventDefault();
   const toDo = input.value;
   input.value = "";
-  store.dispatch({type: ADD_TODO, text: toDo, id: Date.now()});
+  dispatchAddTodo(toDo)
 }
 
 form.addEventListener("submit", onSubmit);
