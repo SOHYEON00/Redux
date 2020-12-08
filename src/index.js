@@ -1,4 +1,4 @@
-import { createStore } from "redux";  //not react-redux!
+import { createStore } from "redux"; //not react-redux!
 
 // store : data(state)를 넣는 곳
 
@@ -11,20 +11,35 @@ const add = document.getElementById("add");
 const minus = document.getElementById("minus");
 const number = document.querySelector("span");
 
+// ****************** improvement 2 (using const variable instead of string)
+const ADD = "ADD";
+const MINUS = "MINUS";
+
+
+
 //countModifier(reducer) 외에 그 어떤 다른 함수에서 state(data)를 변경시킬 수 있는 함수는 없다.
 //state = 0 : state 초기화하는 건데 항상 하는게 아니라, 만약 state(count)값이 없다면 초기화해주는 것.
 const countModifier = (count = 0, action) => {
   //modify state code, but how? => using action => countModifier(currentState = 0, {type: "HELLO"}) 이렇게 실행됨.
-  console.log(count, action)
+  console.log(count, action);
   //적용하기
-  if (action.type === "ADD") {
-    return count += 1;
-  }
-  else if(action.type === "MINUS"){
-    return count = count-1;
-  }
-  else {
-    return count;
+  // if (action.type === "ADD") {
+  //   return count += 1;
+  // }
+  // else if(action.type === "MINUS"){
+  //   return count = count-1;
+  // }
+  // else {
+  //   return count;
+  // }
+  // ******************** improvement 1 (using switch() instead of if-else if-else )
+  switch (action.type) {
+    case ADD:
+      return count + 1;
+    case MINUS:
+      return count - 1;
+    default:
+      return count;
   }
 };
 // reducer : data의 의미를 찾고 수정(modify)하는 function이다.
@@ -39,25 +54,23 @@ const countStore = createStore(countModifier); // => Reducer가 필요함
 // countStore.dispatch({type: "ADD"});
 // countStore.dispatch({type: "MINUS"});
 
-
-// console.log(countStore.getState()); 
-//countStore는 총 4개의 함수를 가진다. 
+// console.log(countStore.getState());
+//countStore는 총 4개의 함수를 가진다.
 // dispatch() , getState() , replaceReducer() , subscribe()
 
 // subscribe : store안에 있는 변화들을 알게 해준다.
 // 즉, state에 변화가 생기면 실행되는 함수 == html에 number(state)를 업데이트하는 기능
 const onChange = () => {
   number.innerText = countStore.getState();
-}
+};
 
-countStore.subscribe(onChange)
+countStore.subscribe(onChange);
 
 // 작성 순서
 // 1. create store using createStore
 // 2. create reducer and add it on store
 // 3. dispatch를 이용해서 msg를 store에 보내면 된다. (msg==={type: "ADD"})
 // 4. 전송한 MSG는 action에 넣고 action을 체크한다.
-
 
 // let count = 0; //이 곳이 이 어플리케이션에서 변하는 유일한 데이터
 // number.innerText = count;
@@ -77,8 +90,7 @@ countStore.subscribe(onChange)
 //   count--;
 //   updateText();
 // }
- 
 
 // 버튼과 REDUCER연결하기
-add.addEventListener("click", () => countStore.dispatch({type: "ADD"}));
-minus.addEventListener("click", () => countStore.dispatch({type: "MINUS"}));
+add.addEventListener("click", () => countStore.dispatch({ type: ADD }));
+minus.addEventListener("click", () => countStore.dispatch({ type: MINUS }));
