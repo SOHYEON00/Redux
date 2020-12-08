@@ -1,23 +1,76 @@
+import { createStore } from "redux";  //not react-redux!
+
+// store : data(state)를 넣는 곳
+
+//redux는 data를 관리하는 걸 도와주는 역할을 하기 위해 만들어짐.
+
+//what is state?
+// state : application에서 바뀌는 data를 의미함
+
 const add = document.getElementById("add");
 const minus = document.getElementById("minus");
 const number = document.querySelector("span");
 
-let count = 0;
-number.innerText = count;
+//countModifier(reducer) 외에 그 어떤 다른 함수에서 state(data)를 변경시킬 수 있는 함수는 없다.
+//state = 0 : state 초기화하는 건데 항상 하는게 아니라, 만약 state(count)값이 없다면 초기화해주는 것.
+const countModifier = (count = 0, action) => {
+  //modify state code, but how? => using action => countModifier(currentState = 0, {type: "HELLO"}) 이렇게 실행됨.
 
-const updateText = () => {
-  number.innerText = count;
-}
+  //적용하기
+  if (action.type === "ADD") {
+    return count++;
+  }
+  else if(action.type === "MINUS"){
+    return count--;
+  }
+  else {
+    return count;
+  }
+  
+};
+// reducer : data의 의미를 찾고 수정(modify)하는 function이다.
+// reducer가 return 하는 것이 application의 data가 된다.
 
-const addValue = () => {
-  count ++;
-  updateText();
-}
+const countStore = createStore(countModifier); // => Reducer가 필요함
 
-const minusValue = () => {
-  count--;
-  updateText();
-}
+//reducer에게 action을 보내는 방법 : store.dispatch()사용하기
+//action 은 항상 object여야 한다.
 
-add.addEventListener("click", addValue);
-minus.addEventListener("click", minusValue);
+//얘네는 선언하면 바로 실행됨.
+countStore.dispatch({type: "ADD"});
+countStore.dispatch({type: "MINUS"});
+
+
+console.log(countStore.getState()); 
+//countStore는 총 4개의 함수를 가진다. 
+// dispatch() , getState() , replaceReducer() , subscribe()
+
+
+// 작성 순서
+// 1. create store using createStore
+// 2. create reducer and add it on store
+// 3. dispatch를 이용해서 msg를 store에 보내면 된다. (msg==={type: "ADD"})
+// 4. 전송한 MSG는 action에 넣고 action을 체크한다.
+
+
+// let count = 0; //이 곳이 이 어플리케이션에서 변하는 유일한 데이터
+// number.innerText = count;
+
+// //html에게 count 업데이트 하라고 알려주는 코드
+// const updateText = () => {
+//   number.innerText = count;
+// }
+
+// //여기서 코드 끝까지는 오직 count를 수정하기 위한 코드일 뿐이다.
+// const addValue = () => {
+//   count ++;
+//   updateText();
+// }
+
+// const minusValue = () => {
+//   count--;
+//   updateText();
+// }
+
+// add.addEventListener("click", addValue);
+// minus.addEventListener("click", minusValue);
