@@ -60,19 +60,32 @@ by Nomad Coders
 - 리액트는 변화가 있는 부분만 리렌더해주는데, 이 때 변화가 있는 부분을 리랜더 해주고 싶다면?
   ***React-Redux 사용 포인트 : store의 변동사항에 대해 subscribe하고 싶기 때문에 redux 사용한다.***
 
-2. 앱에 store 사용하기 (./src/routes/index.js)
+<br/>
+
+2. 앱에 store 적용하기 (./src/routes/index.js)
 
 ```
 <Provider store={store}> 
     <App /> 
   </Provider> 
 ```
+이렇게 <APP />에 스토어를 적용해주기위해, 즉 변화 발생 시 리랜더링해주기 위해 Provider사용 후 스토어 사용.
+
+<br/>
 
 3. 해야할 것 
 1) redux state로부터 정보를 가지고 올 수 있어야 한다. store.getState();
- 
+- HOME 컴포넌트의 <ul>에서 store 안의 state를 가져와야 한다.
+***connect() 사용 ***
 
-이렇게 <APP />에 스토어를 적용해주기위해, 즉 변화 발생 시 리랜더링해주기 위해 Provider사용 후 스토어 사용.
+### connect()
+> [link, ref](https://redux.js.org/recipes/computing-derived-data)  
+
+- connect components to the store
+- has _two_ arguments : state /  dispatch
+
+
+<br/><br/><br/><br/>
 
 ### 출처
 무료강의 [노마드코더 초보자를 위한 리덕스101](https://nomadcoders.co/redux-for-beginners/lobby)
