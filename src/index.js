@@ -169,10 +169,11 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import App from "./components/App";
-import {store} from "./routes/store";
+import store from "./store";
 
 ReactDOM.render(
-  <Provider store={store}> //여기에다가 스토어 사용!!!!!
+  <Provider store={store}> 
+  {/* //여기에다가 스토어 사용!!!!! */}
     <App /> 
   </Provider>  
   
